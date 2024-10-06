@@ -1,7 +1,7 @@
 import React from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Form, Button, Input, notification } from "antd";
-import { auth } from "../../services/firbase";
+import { auth } from "../../services/firebase";
 
 class Register extends React.Component {
   constructor() {
