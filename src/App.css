@@ -1,0 +1,12 @@
+#divContainer {
+  width: 1000px; /* Set a fixed width for the square */
+  height: 800px; /* Set a fixed height for the square */
+  border: 2px solid #000; /* Black border */
+  border-radius: 10px; /* Rounded corners (optional) */
+  padding: 20px; /* Internal padding */
+  overflow: auto; /* Adds a scrollbar if content exceeds dimensions */
+  background-color: #f9f9f9; /* Light background color (optional) */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow (optional) */
+  /* margin: 20px auto; Center the square horizontally */
+  text-align: left; /* Text will be left-aligned */
+}
