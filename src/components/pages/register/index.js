@@ -1,96 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Form, Button, Input, notification } from "antd";
+import { Form, Button, Input } from "antd";
 import { auth } from "../../services/firebase";
+import "./index.css";
 
-class Register extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      loading: false,
-    };
-  }
+const Register = () => {
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
-  handleChangeInput = (e) => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleRegister = async (e) => {
-    e.preventDefault();
-    this.setState({
-      loading: true,
-    });
-
-    const { email, password } = this.state;
-
+  const handleRegister = async (values) => {
+    setLoading(true);
+    const { email, password } = values;
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.log("Error:");
+    } catch (e) {
+      console.log(e);
     } finally {
-      this.setState({
-        loading: false,
-      });
+      setLoading(false);
     }
   };
 
-  render() {
-    const { loading } = this.state;
-    return (
-      <div>
-        <fieldset>
-          <legend>Register</legend>
-          <Form layout="vertical" onSubmit={this.handleRegister}>
-            <Form.Item label="First Name">
-              <Input
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                onChange={this.handleChangeInput}
-              />
-            </Form.Item>
-            <Form.Item labe="Last Name">
-              <Input
-                type="text"
-                name="LastName"
-                placeholder="Last Name"
-                onChange={this.handleChangeInput}
-              />
-            </Form.Item>
-            <Form.Item label="Email">
-              <Input
-                type="text"
-                name="Email"
-                placeholder="Email"
-                // value={this.state.EmailName}
-                onChange={this.handleChangeInput}
-              />
-            </Form.Item>
+  return (
+    <div className="auth_container">
+      <Form layout="vertical" form={form} onFinish={handleRegister}>
+        <Form.Item
+          label="First Name"
+          name="firstName"
+          rules={[
+            {
+              required: true,
+              message: "Please input your First Name",
+            },
+          ]}
+        >
+          <Input placeholder="First Name" />
+        </Form.Item>
 
-            <Form.Item label="Password">
-              <Input.Password
-                type="password"
-                name="Password"
-                placeholder="Password"
-                onChange={this.handleChangeInput}
-              />
-            </Form.Item>
-            <hr />
-            <Button type="primary">
-              {loading ? "loading..." : "Register"}
-            </Button>
-          </Form>
-        </fieldset>
-      </div>
-    );
-  }
-}
+        <Form.Item
+          label="Last Name"
+          name="lastName"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Last Name",
+            },
+          ]}
+        >
+          <Input placeholder="Last Name" />
+        </Form.Item>
+
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Email",
+            },
+          ]}
+        >
+          <Input type="email" placeholder="Email" />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password",
+            },
+            {
+              pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+              message: "Wrong Password",
+            },
+          ]}
+        >
+          <Input.Password placeholder="Password" />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Sign Up
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  );
+};
 
 export default Register;
