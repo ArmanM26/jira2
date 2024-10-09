@@ -78,7 +78,6 @@ const Register = () => {
         >
           <Input.Password placeholder="Password" />
         </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             Sign Up
