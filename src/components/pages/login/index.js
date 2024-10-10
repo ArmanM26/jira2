@@ -4,6 +4,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../services/firebase";
 import { ROUTE_CONSTANTS } from "../../core/utils/constatns";
 import { Link, useNavigate } from "react-router-dom";
+import "./index.css";
+import loginImage from "../../images/loginImage.avif";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,8 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="auth_container">
+      <img src={loginImage} alt="Login" className="auth_image" />
       <Form layout="vertical" form={form} onFinish={handleLogin}>
         <Form.Item
           label="Email"

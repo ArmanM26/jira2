@@ -5,6 +5,7 @@ import { auth } from "../../services/firebase";
 import { Link } from "react-router-dom";
 import { ROUTE_CONSTANTS } from "../../core/utils/constatns";
 import "./index.css";
+import loginImage from "../../images/loginImage.avif";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,8 @@ const Register = () => {
 
   return (
     <div className="auth_container">
+      <img src={loginImage} alt="Login" className="auth_image" />
+
       <Form layout="vertical" form={form} onFinish={handleRegister}>
         <Form.Item
           label="First Name"
