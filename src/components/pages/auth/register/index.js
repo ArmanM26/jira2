@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Form, Button, Input } from "antd";
-import { auth } from "../../services/firebase";
+import { Form, Button, Input, Flex } from "antd";
+import { auth } from "../../..//services/firebase";
 import { Link } from "react-router-dom";
-import { ROUTE_CONSTANTS } from "../../core/utils/constatns";
+import {
+  regexpValidation,
+  ROUTE_CONSTANTS,
+} from "../../../core/utils/constatns";
 import "./index.css";
-import loginImage from "../../images/loginImage.avif";
+import RegisterBanner from "../../../core/images/auth_register.jpg";
+// import loginImage from "../../../images/loginImage.avif";
+import AuthWrapper from "../../../Components/sheard/AuthWrapper";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -24,9 +29,9 @@ const Register = () => {
   };
 
   return (
-    <div className="auth_container">
-      <img src={loginImage} alt="Login" className="auth_image" />
-
+    // <div className="auth_container">
+    //   <img src={loginImage} alt="Login" className="auth_image" />
+    <AuthWrapper title="Sign Up" banner={RegisterBanner}>
       <Form layout="vertical" form={form} onFinish={handleRegister}>
         <Form.Item
           label="First Name"
@@ -70,6 +75,7 @@ const Register = () => {
         <Form.Item
           label="Password"
           name="password"
+          tooltip="Password must be 6-16 characters long, contain at least one number, one special character (!@#$%^&*), and a mix of letters."
           rules={[
             {
               required: true,
@@ -83,15 +89,39 @@ const Register = () => {
         >
           <Input.Password placeholder="Password" />
         </Form.Item>
+        <Form.Item
+          label="Config Password"
+          name="confirm"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password",
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("The two passwords do not match!")
+                );
+              },
+            }),
+          ]}
+        >
+          <Input.Password placeholder="Config Password" />
+        </Form.Item>
 
-        <Form.Item>
+        <Flex align="flex-end" gap="10px" justify="flex-end">
+          <Link to={ROUTE_CONSTANTS.LOGIN}>Sign in</Link>
+
           <Button type="primary" htmlType="submit" loading={loading}>
             Sign Up
           </Button>
-          <Link to={ROUTE_CONSTANTS.LOGIN}>Sign in</Link>
-        </Form.Item>
+        </Flex>
       </Form>
-    </div>
+    </AuthWrapper>
+    // </div>
   );
 };
 

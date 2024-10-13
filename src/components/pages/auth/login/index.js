@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Form, Input, Button } from "antd";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../services/firebase";
-import { ROUTE_CONSTANTS } from "../../core/utils/constatns";
+import { auth } from "../../../services/firebase";
+import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
+import AuthWrapper from "../../../Components/sheard/AuthWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
-import loginImage from "../../images/loginImage.avif";
+import loginBanner from "../../../core/images/auth_login.jpg";
+// import loginImage from "../../../images/loginImage.avif";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -26,8 +28,9 @@ const Login = () => {
   };
 
   return (
-    <div className="auth_container">
-      <img src={loginImage} alt="Login" className="auth_image" />
+    <AuthWrapper title="Sign in" banner={loginBanner}>
+      {/* <div className="auth_container"> */}
+      {/* <img src={loginImage} alt="Login" className="auth_image" /> */}
       <Form layout="vertical" form={form} onFinish={handleLogin}>
         <Form.Item
           label="Email"
@@ -44,6 +47,7 @@ const Login = () => {
         <Form.Item
           label="Password"
           name="password"
+          tooltip="Password must be min 6 max 16 charecters ....."
           rules={[
             {
               required: true,
@@ -62,7 +66,8 @@ const Login = () => {
         </Button>
         <Link to={ROUTE_CONSTANTS.REGISTER}>Sign up</Link>{" "}
       </Form>
-    </div>
+      {/* </div> */}
+    </AuthWrapper>
   );
 };
 
