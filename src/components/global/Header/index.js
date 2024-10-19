@@ -1,19 +1,19 @@
-import { Flex, Button } from "antd";
+import { Flex } from "antd";
 import "./index.css";
-import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
-import { Link, useNavigate } from "react-router-dom";
+// import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
+// import { Link, useNavigate } from "react-router-dom";
+import AuthProfileDropDown from "../sheard/AuthProfileDropDown";
 
 const Header = () => {
   return (
     <div className="main_header">
-      <div className="header_logo">
+      <Flex justify="space-between" align="center" style={{ width: "100%" }}>
         <p>Logo</p>
-      </div>
-      <div className="header_signin">
-        <Link to="/login" className="signin_button">
-          Sign in
-        </Link>
-      </div>
+        <div style={{ marginLeft: "auto" }}>
+          {" "}
+          <AuthProfileDropDown />
+        </div>
+      </Flex>
     </div>
   );
 };
