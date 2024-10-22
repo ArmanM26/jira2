@@ -19,6 +19,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./services/firebase";
 import { AuthContext, authContext } from "./context/authContext";
 import LoadingWrapper from "../Components/sheard/LoadingWrapper";
+import Profile from "./pages/profile";
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -49,6 +50,16 @@ const App = () => {
                 />
                 <Route path={ROUTE_CONSTANTS.REGISTER} element={<Register />} />
                 <Route path={ROUTE_CONSTANTS.CABINET} element={<Cabinet />} />
+                <Route
+                  path={ROUTE_CONSTANTS.PROFILE}
+                  element={
+                    isAuth ? (
+                      <Profile />
+                    ) : (
+                      <Navigate to={ROUTE_CONSTANTS.LOGIN} />
+                    )
+                  }
+                />
               </Route>
             )
           )}
