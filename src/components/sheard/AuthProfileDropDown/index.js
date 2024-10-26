@@ -1,16 +1,25 @@
-import { Avatar, Dropdown, Button, Typography, Flex, theme } from "antd";
-import "./index.css";
+import { Avatar, Dropdown, Typography, Flex, theme } from "antd";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../services/firebase";
 import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
+import "./index.css";
 
 const { useToken } = theme;
 const { Text } = Typography;
 
-const AuthProfileDropDown = () => {
+const getFullNameLetter = ({ firstName, lastName }) => {
+  if (firstName && lastName) {
+    return `${firstName[0]} ${lastName[0]}`;
+  }
+
+  return "-";
+};
+
+const AuthProfileDropDown = ({ userProfileInfo }) => {
   const navigate = useNavigate();
   const { token } = useToken();
+
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -18,6 +27,7 @@ const AuthProfileDropDown = () => {
       console.lolg(e, "signOut Error");
     }
   };
+
   const items = [
     {
       label: "Profile",
@@ -47,29 +57,25 @@ const AuthProfileDropDown = () => {
               borderRadius: token.borderRadiusLG,
               backgroundColor: token.colorBgElevated,
               boxShadow: token.boxShadowSecondary,
-              padding: token.sizeXS,
             }}
           >
             <Flex vertical align="center" style={{ padding: token.sizeMS }}>
-              <Avatar
-                src="https://img.freepik.com/free-vector/user-blue-gradient_78370-4692.jpg?ga=GA1.1.1067879588.1728592679&semt=ais_hybrid"
-                size="large"
-              />
-              <Text strong style={{ marginTop: 10 }}>
-                John Smith
+              <Avatar src="https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png" />
+              <Text>
+                {userProfileInfo.firstName} {userProfileInfo.lastName}
               </Text>
-              <Text type="secondary">johnsmith@gmail.com</Text>
+              <Text type="secondary" underline>
+                {userProfileInfo.email}
+              </Text>
             </Flex>
             {menu}
           </div>
         );
       }}
     >
-      <Flex direction="column" align="center" style={{ padding: token.sizeMS }}>
-        <Avatar size="large" className="user_profile_avatar">
-          J S
-        </Avatar>
-      </Flex>
+      <Avatar size="large" className="user_profile_avatar">
+        {getFullNameLetter(userProfileInfo)}
+      </Avatar>
     </Dropdown>
   );
 };

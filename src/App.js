@@ -16,23 +16,37 @@ import "./App.css";
 import "./index.css";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./services/firebase";
-import { AuthContext, authContext } from "./context/authContext";
+import { auth, db } from "./services/firebase";
+import { AuthContext } from "./context/authContext";
 import LoadingWrapper from "../Components/sheard/LoadingWrapper";
 import Profile from "./pages/profile";
+import { getDoc, doc } from "firebase/firestore";
+import { FIRESTORE_PATH_NAMES } from "./core/utils/constatns";
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userProfileInfo, setUserProfileInfo] = useState({});
+
+  const handleGetUserData = async (uid) => {
+    const docRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+    const response = await getDoc(docRef);
+
+    if (response.exists()) {
+      setUserProfileInfo(response.data());
+    }
+  };
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
+      user.uid && handleGetUserData(user.uid);
+
       setLoading(false);
       setIsAuth(Boolean(user));
     });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+    <AuthContext.Provider value={{ isAuth, setIsAuth, userProfileInfo }}>
       <LoadingWrapper loading={loading}>
         <RouterProvider
           router={createBrowserRouter(

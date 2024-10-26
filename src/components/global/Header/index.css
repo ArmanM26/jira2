@@ -1,32 +1,6 @@
-.main_header {
+.main_header{
     background-color: #4a90e2;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.header_logo p {
-    font-size: 24px;
-    color: white;
-    margin: 0;
-}
-
-.header_signin {
-    margin-right: 10px;
-}
-
-.signin_button {
-    color: white;
-    background-color: #0056b3;
-    padding: 8px 16px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.signin_button:hover {
-    background-color: #003f88;
-}
+    padding: 16px;
+  }
+  
+  

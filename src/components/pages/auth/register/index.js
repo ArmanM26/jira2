@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Form, Button, Input, Flex } from "antd";
+import { Form, Button, Input, Flex, notification } from "antd";
 import { auth, db } from "../../../services/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import {
   regexpValidation,
   ROUTE_CONSTANTS,
+  FIRESTORE_PATH_NAMES,
 } from "../../../core/utils/constatns";
 import "./index.css";
 import registerBanner from "../../../core/images/auth_register.jpg";
@@ -27,18 +28,21 @@ const Register = () => {
         email,
         password
       );
-      console.log(response, "response");
       const { uid } = response.user;
-      const createdDoc = doc(db, "registeredUsers", uid);
-      await setDoc(createdDoc, {
+      const createDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+      await setDoc(createDoc, {
+        uid,
         firstName,
         lastName,
         email,
       });
 
+      form.resetFields();
       navigate(ROUTE_CONSTANTS.LOGIN);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      notification.error({
+        message: "Invalid Register Credentials",
+      });
     } finally {
       setLoading(false);
     }

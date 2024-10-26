@@ -5,24 +5,27 @@ import "./index.css";
 import AuthProfileDropDown from "../sheard/AuthProfileDropDown";
 import { AuthContext } from "../../../context/authContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
+
 const Header = () => {
-  const isAuth = useContext(AuthContext);
+  const { isAuth, userProfileInfo } = useContext(AuthContext);
 
   return (
     <div className="main_header">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+      <Flex justify="space-between" align="center">
         <p>Logo</p>
-        <div style={{ marginLeft: "auto" }}>
-          {isAuth ? <AuthProfileDropDown /> : <Button>Sign in</Button>}
+
+        <div>
+          {isAuth ? (
+            <AuthProfileDropDown userProfileInfo={userProfileInfo} />
+          ) : (
+            <Link to={ROUTE_CONSTANTS.LOGIN}>
+              <Button>Sign in</Button>
+            </Link>
+          )}
         </div>
-      </div>
+      </Flex>
     </div>
   );
 };
