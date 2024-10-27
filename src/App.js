@@ -22,6 +22,7 @@ import LoadingWrapper from "../Components/sheard/LoadingWrapper";
 import Profile from "./pages/profile";
 import { getDoc, doc } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "./core/utils/constatns";
+import CabinetLayout from "./Components/layouts/Cabinet";
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -38,7 +39,7 @@ const App = () => {
   };
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      user.uid && handleGetUserData(user.uid);
+      user?.uid && handleGetUserData(user.uid);
 
       setLoading(false);
       setIsAuth(Boolean(user));
@@ -46,7 +47,7 @@ const App = () => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth, userProfileInfo }}>
+    <AuthContext.Provider value={{ isAuth, userProfileInfo }}>
       <LoadingWrapper loading={loading}>
         <RouterProvider
           router={createBrowserRouter(
@@ -58,22 +59,33 @@ const App = () => {
                     isAuth ? (
                       <Navigate to={ROUTE_CONSTANTS.CABINET} />
                     ) : (
-                      <Login />
+                      <Login setIsAuth={setIsAuth} />
                     )
                   }
                 />
-                <Route path={ROUTE_CONSTANTS.REGISTER} element={<Register />} />
-                <Route path={ROUTE_CONSTANTS.CABINET} element={<Cabinet />} />
                 <Route
-                  path={ROUTE_CONSTANTS.PROFILE}
+                  path={ROUTE_CONSTANTS.REGISTER}
                   element={
                     isAuth ? (
-                      <Profile />
+                      <Navigate to={ROUTE_CONSTANTS.CABINET} />
+                    ) : (
+                      <Register />
+                    )
+                  }
+                />
+
+                <Route
+                  path={ROUTE_CONSTANTS.CABINET}
+                  element={
+                    isAuth ? (
+                      <CabinetLayout />
                     ) : (
                       <Navigate to={ROUTE_CONSTANTS.LOGIN} />
                     )
                   }
-                />
+                >
+                  <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
+                </Route>
               </Route>
             )
           )}
@@ -82,5 +94,4 @@ const App = () => {
     </AuthContext.Provider>
   );
 };
-
 export default App;
