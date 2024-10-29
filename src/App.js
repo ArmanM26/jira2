@@ -6,6 +6,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useCallback } from "react";
 import Cabinet from "./pages/auth/cabinet";
 import Register from "./pages/auth/register";
 import MainLayout from "./Components/layouts/Main";
@@ -28,15 +29,15 @@ const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userProfileInfo, setUserProfileInfo] = useState({});
-
-  const handleGetUserData = async (uid) => {
+  const handleGetUserData = useCallback(async (uid) => {
     const docRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
     const response = await getDoc(docRef);
 
     if (response.exists()) {
       setUserProfileInfo(response.data());
     }
-  };
+  }, []);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       user?.uid && handleGetUserData(user.uid);
@@ -45,9 +46,10 @@ const App = () => {
       setIsAuth(Boolean(user));
     });
   }, []);
-
   return (
-    <AuthContext.Provider value={{ isAuth, userProfileInfo }}>
+    <AuthContext.Provider
+      value={{ isAuth, userProfileInfo, handleGetUserData }}
+    >
       <LoadingWrapper loading={loading}>
         <RouterProvider
           router={createBrowserRouter(
