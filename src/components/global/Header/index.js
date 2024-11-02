@@ -1,21 +1,19 @@
+import React, { useContext } from "react";
 import { Button, Flex } from "antd";
-import "./index.css";
-// import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
-// import { Link, useNavigate } from "react-router-dom";
-import AuthProfileDropDown from "../sheard/AuthProfileDropDown";
+import AuthProfileDropDown from "./../sheard/AuthProfileDropDown";
 import { AuthContext } from "../../../context/authContext";
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { isAuth, userProfileInfo } = useContext(AuthContext);
+  const { count } = useSelector((store) => store.userProfile);
 
   return (
     <div className="main_header">
       <Flex justify="space-between" align="center">
-        <p>Logo</p>
-
+        <p>{count}</p>
         <div>
           {isAuth ? (
             <AuthProfileDropDown userProfileInfo={userProfileInfo} />

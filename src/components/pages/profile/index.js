@@ -2,12 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import { Form, Input, Button, notification, Upload } from "antd";
 import { AuthContext } from "../../context/authContext";
 import { db } from "../../services/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "../../core/utils/constatns";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "../../state-managment/slices/userProfile";
 import "./index.css";
-import FormItem from "antd/es/form/FormItem";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const { count } = useSelector((store) => store.userProfile);
   const { userProfileInfo, handleGetUserData } = useContext(AuthContext);
   const [form] = Form.useForm();
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -23,13 +26,9 @@ const Profile = () => {
       const userDocRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
       await updateDoc(userDocRef, values);
       handleGetUserData(uid);
-      notification.info({
-        message: "User data successfuly updated",
-      });
+      notification.info({ message: "User data successfully updated" });
     } catch (error) {
-      notification.error({
-        message: "Error :(",
-      });
+      notification.error({ message: "Error :(" });
     } finally {
       setButtonLoading(false);
     }
@@ -37,9 +36,12 @@ const Profile = () => {
 
   return (
     <div className="form_page_container">
+      <hr />
+      <Button onClick={() => dispatch(decrement())}>-</Button>
+      <span>{count}</span>
+      <Button onClick={() => dispatch(increment())}>+</Button>
       <Form layout="vertical" form={form} onFinish={handleEditUserProfile}>
-        <Form.Item>
-          label="Profile image"
+        <Form.Item label="Profile image">
           <Upload></Upload>
         </Form.Item>
         <Form.Item
@@ -49,7 +51,6 @@ const Profile = () => {
         >
           <Input placeholder="First Name" />
         </Form.Item>
-
         <Form.Item
           label="Last Name"
           name="lastName"
@@ -57,15 +58,12 @@ const Profile = () => {
         >
           <Input placeholder="Last Name" />
         </Form.Item>
-
         <Form.Item label="Email" name="email">
           <Input readOnly placeholder="Email" />
         </Form.Item>
-
         <Form.Item label="Phone Number" name="phoneNumber">
           <Input placeholder="Phone Number" />
         </Form.Item>
-
         <Button type="primary" htmlType="submit" loading={buttonLoading}>
           Submit
         </Button>

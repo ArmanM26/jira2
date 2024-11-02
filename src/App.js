@@ -24,6 +24,8 @@ import Profile from "./pages/profile";
 import { getDoc, doc } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "./core/utils/constatns";
 import CabinetLayout from "./Components/layouts/Cabinet";
+import { Provider } from "react-redux";
+import { store } from "./state-managment/store";
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
