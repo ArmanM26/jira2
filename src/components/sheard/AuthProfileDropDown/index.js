@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../../services/firebase";
 import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
 import "./index.css";
-
+import { useDispatch } from "react-redux";
+import { setIsAuth } from "../../../state-managment/slices/userProfile";
 const { useToken } = theme;
 const { Text } = Typography;
 
@@ -17,12 +18,15 @@ const getFullNameLetter = ({ firstName, lastName }) => {
 };
 
 const AuthProfileDropDown = ({ userProfileInfo }) => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const { token } = useToken();
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      dispatch(setIsAuth(false));
     } catch (e) {
       console.lolg(e, "signOut Error");
     }

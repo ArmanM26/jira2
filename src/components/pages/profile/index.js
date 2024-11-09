@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../../state-managment/slices/userProfile";
 import { fetchUserProfileInfo } from "../../state-managment/slices/userProfile";
 import "./index.css";
+import ImgUpload from "../../Components/sheard/ImgUpload";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const Profile = () => {
       <Form layout="vertical" form={form} onFinish={handleEditUserProfile}>
         <Form.Item label="Profile Image">
           <Upload>Upload</Upload>
+          <ImgUpload />
         </Form.Item>
 
         <Form.Item

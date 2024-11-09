@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Flex, notification } from "antd";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../services/firebase";
 import { ROUTE_CONSTANTS } from "../../../core/utils/constatns";
@@ -8,29 +8,33 @@ import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import loginBanner from "../../../core/images/auth_login.jpg";
 // import loginImage from "../../../images/loginImage.avif";
+import { useDispatch } from "react-redux";
+import { setIsAuth } from "../../../state-managment/slices/userProfile";
+import { fetchUserProfileInfo } from "../../../state-managment/slices/userProfile";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const handleLogin = async (values) => {
     setLoading(true);
     try {
       const { email, password } = values;
       await signInWithEmailAndPassword(auth, email, password);
-      navigate(ROUTE_CONSTANTS.LOGIN);
-    } catch (error) {
-      console.log(error);
+      form.resetFields();
+      dispatch(fetchUserProfileInfo());
+    } catch (err) {
+      notification.error({
+        message: "Invalid Login Credentials",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <AuthWrapper title="Sign in" banner={loginBanner}>
-      {/* <div className="auth_container"> */}
-      {/* <img src={loginImage} alt="Login" className="auth_image" /> */}
+    <AuthWrapper title="Sign In" banner={loginBanner}>
       <Form layout="vertical" form={form} onFinish={handleLogin}>
         <Form.Item
           label="Email"
@@ -38,35 +42,34 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: "Please input your email",
+              message: "Please input your Email",
             },
           ]}
         >
           <Input type="email" placeholder="Email" />
         </Form.Item>
+
         <Form.Item
           label="Password"
           name="password"
-          tooltip="Password must be min 6 max 16 charecters ....."
           rules={[
             {
               required: true,
-              message: "Please input your password",
-            },
-            {
-              pattern: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
-              message: "Wrong Password",
+              message: "Please input your Password",
             },
           ]}
         >
           <Input.Password placeholder="Password" />
         </Form.Item>
-        <Button type="primary" htmlType="submit" loading={loading}>
-          Sign in
-        </Button>
-        <Link to={ROUTE_CONSTANTS.REGISTER}>Sign up</Link>{" "}
+
+        <Flex align="center" justify="flex-end" gap="10px">
+          <Link to={ROUTE_CONSTANTS.REGISTER}>Create account</Link>
+
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Sign In
+          </Button>
+        </Flex>
       </Form>
-      {/* </div> */}
     </AuthWrapper>
   );
 };
