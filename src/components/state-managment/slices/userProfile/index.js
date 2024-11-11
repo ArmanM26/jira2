@@ -40,6 +40,9 @@ const userProfileSlice = createSlice({
     setIsAuth: (state, action) => {
       state.authUserInfo.isAuth = action.payload;
     },
+    setProfileImgUrl: (state, action) => {
+      state.authUserInfo.userData.imgUrl = action.payload;
+    },
   },
   extraReducers: (promise) => {
     promise
@@ -59,5 +62,5 @@ const userProfileSlice = createSlice({
       });
   },
 });
-export const { setIsAuth } = userProfileSlice.actions;
+export const { setIsAuth, setProfileImgUrl } = userProfileSlice.actions;
 export default userProfileSlice.reducer;

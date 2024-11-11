@@ -29,8 +29,8 @@ const Register = () => {
         password
       );
       const { uid } = response.user;
-      const createDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
-      await setDoc(createDoc, {
+      const createdDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+      await setDoc(createdDoc, {
         uid,
         firstName,
         lastName,
