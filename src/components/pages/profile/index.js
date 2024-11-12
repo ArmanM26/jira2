@@ -1,38 +1,44 @@
-import { useContext, useEffect, useState } from "react";
-import { Form, Input, Button, notification, Upload } from "antd";
-import { AuthContext } from "../../context/authContext";
-import { db } from "../../services/firebase";
+import { useEffect, useState } from "react";
+import { Form, Input, Button, notification, Upload, message } from "antd";
+// import { AuthContext } from "../../context/authContext";
+import { db, storage } from "../../services/firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { FIRESTORE_PATH_NAMES } from "../../core/utils/constatns";
+import {
+  FIRESTORE_PATH_NAMES,
+  STORAGE_PATH_NAMES,
+} from "../../core/utils/constatns";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement } from "../../state-managment/slices/userProfile";
-import { fetchUserProfileInfo } from "../../state-managment/slices/userProfile";
+// import { increment, decrement } from "../../state-managment/slices/userProfile";
+import {
+  setProfieImgUrl,
+  fetchUserProfileInfo,
+} from "../../state-managment/slices/userProfile";
 import "./index.css";
 import ImgUpload from "../../Components/sheard/ImgUpload";
 
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+
 const Profile = () => {
-  const dispatch = useDispatch();
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const {
     authUserInfo: { userData },
   } = useSelector((store) => store.userProfile);
   const [form] = Form.useForm();
   const [buttonLoading, setButtonLoading] = useState(false);
   const { uid, ...restData } = userData;
-
-  useEffect(() => {
-    form.setFieldsValue(restData);
-  }, [form, restData]);
+  const dispatch = useDispatch();
 
   const handleEditUserProfile = async (values) => {
     setButtonLoading(true);
     try {
       const userDocRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
       await updateDoc(userDocRef, values);
-      //   dispatch(fetchUserProfileInfo());
+      dispatch(fetchUserProfileInfo());
       notification.success({
-        message: "User data successfully updated",
+        message: "user data successfully updated",
       });
-    } catch (error) {
+    } catch {
       notification.error({
         message: "Error :(",
       });
@@ -41,14 +47,65 @@ const Profile = () => {
     }
   };
 
+  const updateUserProfileImg = async (imgUrl) => {
+    try {
+      const userDocRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+      await updateDoc(userDocRef, { imgUrl });
+    } catch {
+      notification.error({
+        message: "Error:(",
+      });
+    }
+  };
+
+  const handleUpload = ({ file }) => {
+    setUploading(true);
+    const storageRef = ref(
+      storage,
+      `${STORAGE_PATH_NAMES.PROFILE_IMAGES}/${uid}`
+    );
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progressValue = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progressValue);
+      },
+      (error) => {
+        setUploading(false);
+        setProgress(0);
+        message.error(`Error uploading file ${error.message}`);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((imgUrl) => {
+          setUploading(false);
+          setProgress(0);
+          updateUserProfileImg(imgUrl);
+          dispatch(setProfieImgUrl(imgUrl));
+          message.success("Upload successful");
+        });
+      }
+    );
+  };
+
+  useEffect(() => {
+    form.setFieldsValue(restData);
+  }, [userData, form]);
+
   return (
     <div className="form_page_container">
+      <hr />
       <Form layout="vertical" form={form} onFinish={handleEditUserProfile}>
         <Form.Item label="Profile Image">
-          <Upload>Upload</Upload>
-          <ImgUpload />
+          <ImgUpload
+            progress={progress}
+            uploading={uploading}
+            handleUpload={handleUpload}
+          />
         </Form.Item>
-
         <Form.Item
           label="First Name"
           name="firstName"

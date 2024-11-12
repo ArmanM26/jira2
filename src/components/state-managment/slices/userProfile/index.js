@@ -3,6 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../../../services/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "../../../core/utils/constatns";
+
 const initialState = {
   loading: true,
   authUserInfo: {
@@ -11,6 +12,7 @@ const initialState = {
   },
   error: null,
 };
+
 export const fetchUserProfileInfo = createAsyncThunk(
   "data/fetchUserProfileInfo",
   async () => {
@@ -23,16 +25,17 @@ export const fetchUserProfileInfo = createAsyncThunk(
             if (userData.exists()) {
               resolve(userData.data());
             } else {
-              resolve(null); //TODO ?
+              resolve(null); //Todo
             }
           });
         } else {
-          reject("Ooops");
+          reject("Ooooops");
         }
       });
     });
   }
 );
+
 const userProfileSlice = createSlice({
   name: "userProfile",
   initialState,
@@ -40,13 +43,13 @@ const userProfileSlice = createSlice({
     setIsAuth: (state, action) => {
       state.authUserInfo.isAuth = action.payload;
     },
-    setProfileImgUrl: (state, action) => {
+    setProfieImgUrl: (state, action) => {
       state.authUserInfo.userData.imgUrl = action.payload;
     },
   },
   extraReducers: (promise) => {
     promise
-      .addCase(fetchUserProfileInfo.pending, (state) => {
+      .addCase(fetchUserProfileInfo.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(fetchUserProfileInfo.fulfilled, (state, action) => {
@@ -62,5 +65,6 @@ const userProfileSlice = createSlice({
       });
   },
 });
-export const { setIsAuth, setProfileImgUrl } = userProfileSlice.actions;
+
 export default userProfileSlice.reducer;
+export const { setIsAuth, setProfieImgUrl } = userProfileSlice.actions;
