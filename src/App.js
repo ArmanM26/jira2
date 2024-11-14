@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 // import { onAuthStateChanged } from "firebase/auth";
 // import { auth, db } from "./services/firebase";
 // import { AuthContext } from "./context/authContext";
-import LoadingWrapper from "../Components/sheard/LoadingWrapper";
+import LoadingWrapper from "./components/sheard/LoadingWrapper";
 import Profile from "./pages/profile";
 // import { getDoc, doc } from "firebase/firestore";
 // import { FIRESTORE_PATH_NAMES } from "./core/utils/constatns";
@@ -28,6 +28,7 @@ import CabinetLayout from "./Components/layouts/Cabinet";
 // import { store } from "./state-managment/store";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserProfileInfo } from "./state-managment/slices/userProfile";
+import Cabinet from "./pages/auth/cabinet";
 
 const App = () => {
   const {
@@ -75,6 +76,10 @@ const App = () => {
               >
                 <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
               </Route>
+              <Route
+                path={ROUTE_CONSTANTS.CABINET}
+                element={<Cabinet />}
+              ></Route>
             </Route>
           )
         )}
