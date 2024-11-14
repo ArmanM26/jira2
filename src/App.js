@@ -1,4 +1,4 @@
-import Header from "./Components/global/Header";
+// import Header from "./Components/global/Header";
 import {
   RouterProvider,
   createBrowserRouter,
@@ -6,26 +6,26 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useCallback } from "react";
-import Cabinet from "./pages/auth/cabinet";
+// import { useCallback } from "react";
+// import Cabinet from "./pages/auth/cabinet";
 import Register from "./pages/auth/register";
 import MainLayout from "./Components/layouts/Main";
 import Login from "./pages/auth/login";
 import { ROUTE_CONSTANTS } from "./core/utils/constatns";
-import AuthWrapper from "./Components/sheard/AuthWrapper";
+// import AuthWrapper from "./Components/sheard/AuthWrapper";
 import "./App.css";
 import "./index.css";
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./services/firebase";
-import { AuthContext } from "./context/authContext";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { auth, db } from "./services/firebase";
+// import { AuthContext } from "./context/authContext";
 import LoadingWrapper from "../Components/sheard/LoadingWrapper";
 import Profile from "./pages/profile";
-import { getDoc, doc } from "firebase/firestore";
-import { FIRESTORE_PATH_NAMES } from "./core/utils/constatns";
+// import { getDoc, doc } from "firebase/firestore";
+// import { FIRESTORE_PATH_NAMES } from "./core/utils/constatns";
 import CabinetLayout from "./Components/layouts/Cabinet";
-import { Provider } from "react-redux";
-import { store } from "./state-managment/store";
+// import { Provider } from "react-redux";
+// import { store } from "./state-managment/store";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserProfileInfo } from "./state-managment/slices/userProfile";
 
