@@ -1,9 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAGEWiILSuoRdBC1d6PKtvbsOy9ksEvHX4",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "jira-ea7d9.firebaseapp.com",
   databaseURL: "https://jira-ea7d9-default-rtdb.firebaseio.com",
   projectId: "jira-ea7d9",
@@ -16,5 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-export { auth };
+export { auth, db, storage };

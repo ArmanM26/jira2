@@ -29,17 +29,16 @@ import CabinetLayout from "./Components/layouts/Cabinet";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserProfileInfo } from "./state-managment/slices/userProfile";
 import Cabinet from "./pages/auth/cabinet";
-
 const App = () => {
+  const dispatch = useDispatch();
   const {
     loading,
     authUserInfo: { isAuth },
   } = useSelector((store) => store.userProfile);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUserProfileInfo());
-  }, [dispatch]);
+  }, []);
 
   return (
     <LoadingWrapper loading={loading}>
@@ -75,11 +74,11 @@ const App = () => {
                 }
               >
                 <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile />} />
+                <Route
+                  path={ROUTE_CONSTANTS.CABINET}
+                  element={<Cabinet />}
+                ></Route>
               </Route>
-              <Route
-                path={ROUTE_CONSTANTS.CABINET}
-                element={<Cabinet />}
-              ></Route>
             </Route>
           )
         )}
@@ -87,5 +86,4 @@ const App = () => {
     </LoadingWrapper>
   );
 };
-
 export default App;
