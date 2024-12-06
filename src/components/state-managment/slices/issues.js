@@ -2,10 +2,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "../../core/utils/constatns";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../services/firebase";
+
 const initialState = {
   data: [],
   isLoading: false,
+  error: null,
 };
+
 export const fetchIssueData = createAsyncThunk(
   "data/fetchIssueData",
   async () => {
@@ -15,6 +18,7 @@ export const fetchIssueData = createAsyncThunk(
     return queryData.docs.map((doc) => doc.data());
   }
 );
+
 const issueSlice = createSlice({
   name: "issueSlice",
   initialState,
@@ -27,7 +31,13 @@ const issueSlice = createSlice({
       .addCase(fetchIssueData.fulfilled, (state, action) => {
         state.data = action.payload;
         state.isLoading = false;
+      })
+      .addCase(fetchIssueData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.data = [];
+        state.error = action.payload;
       });
   },
 });
+
 export default issueSlice.reducer;
