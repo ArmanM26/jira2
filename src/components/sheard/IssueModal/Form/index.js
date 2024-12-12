@@ -2,35 +2,36 @@ import { Form, Input, Select, Space } from "antd";
 import {
   ISSUE_OPTIONS,
   ISSUE_PRIORITY_OPTIONS,
-} from "../../../../core/utils/issues";
-
+} from "../../../../core/utilis/issues";
 import Editor from "../../Editor";
+
 const ModalForm = ({ form, onFinish }) => {
   return (
     <Form layout="vertical" form={form} onFinish={onFinish}>
       <Form.Item
-        name="issueName"
         label="Issue Name"
+        name="issueName"
         rules={[
           {
             required: true,
-            message: "Plaese Input Issue Name",
+            message: "Please input Issue Name",
           },
         ]}
       >
         <Input type="text" placeholder="Issue Name" />
       </Form.Item>
+
       <Form.Item
-        name="type"
         label="Issue Type"
+        name="type"
         rules={[
           {
             required: true,
-            message: "Plaese Select Issue Type",
+            message: "Please input Issue Type",
           },
         ]}
       >
-        <Select>
+        <Select placeholder="Issue Type">
           {Object.values(ISSUE_OPTIONS).map(({ value, icon, label }) => {
             return (
               <Select.Option value={value} key={value}>
@@ -43,29 +44,31 @@ const ModalForm = ({ form, onFinish }) => {
           })}
         </Select>
       </Form.Item>
+
       <Form.Item
-        name="describtion"
-        label="Describtion"
+        name="description"
+        label="Description"
         rules={[
           {
             required: true,
-            message: "Please input Issue Describtion",
+            message: "Please input Issue Description",
           },
         ]}
       >
         <Editor />
       </Form.Item>
+
       <Form.Item
         name="priority"
-        label="Issue Priority"
+        label="Priority"
         rules={[
           {
             required: true,
-            message: "Plaese Select Issue Priority",
+            message: "Please Select Priority",
           },
         ]}
       >
-        <Select>
+        <Select placeholder="Priority">
           {Object.values(ISSUE_PRIORITY_OPTIONS).map(
             ({ value, icon, label }) => {
               return (
