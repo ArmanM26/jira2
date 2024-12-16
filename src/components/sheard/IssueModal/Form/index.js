@@ -55,7 +55,10 @@ const ModalForm = ({ form, onFinish }) => {
           },
         ]}
       >
-        <Editor />
+        <Editor
+          value={form.getFieldValue("description")}
+          onChange={(value) => form.setFieldsValue({ description: value })}
+        />
       </Form.Item>
 
       <Form.Item

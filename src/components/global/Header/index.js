@@ -1,30 +1,31 @@
-import AuthProfileDropDown from '../../sheard/AuthProfileDropDown';
-import { useContext } from 'react';
-import { AuthContext } from '../../../context/authContextProvider';
-import { Flex, Button } from 'antd';
-import { Link } from 'react-router-dom';
-import { ROUTE_CONSTANTS } from '../../../core/utilis/constants';
-import { useSelector } from 'react-redux';
-import './index.css';
+import AuthProfileDropDown from "../../sheard/AuthProfileDropDown";
 
-const Header=()=>{
-   const { authUserInfo: {isAuth, userData} } = useSelector(store => store.userProfile);
+import { Flex, Button } from "antd";
+import { Link } from "react-router-dom";
+import { ROUTE_CONSTANTS } from "../../../core/utilis/constants";
+import { useSelector } from "react-redux";
+import "./index.css";
 
-   return(
+const Header = () => {
+  const {
+    authUserInfo: { isAuth, userData },
+  } = useSelector((store) => store.userProfile);
+  return (
     <div className="main_header">
-       <Flex justify="space-between" align="center">
-       <div>
-         Logo
-       </div>
-
-       <div>
-        {
-           isAuth ? <AuthProfileDropDown userProfileInfo={userData}/> : <Link to={ROUTE_CONSTANTS.LOGIN}><Button>Sign in</Button></Link>
-        }      
-       </div>
-       </Flex>
+      <Flex justify="space-between" align="center">
+        <div>Logo</div>
+        <div>
+          {isAuth ? (
+            <AuthProfileDropDown userProfileInfo={userData} />
+          ) : (
+            <Link to={ROUTE_CONSTANTS.LOGIN}>
+              <Button>Sign in</Button>
+            </Link>
+          )}
+        </div>
+      </Flex>
     </div>
-         );
+  );
 };
 
 export default Header;
