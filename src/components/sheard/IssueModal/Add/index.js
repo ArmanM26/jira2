@@ -6,7 +6,7 @@ import { FIRESTORE_PATH_NAMES } from "../../../../core/utilis/constants";
 import { db } from "../../../../services/firebase";
 import { generateUid } from "../../../../core/helpers/generateUid";
 import { useDispatch } from "react-redux";
-import { fetchIssueData } from "../../../../state-managment/slices/issues/issues";
+import { fetchIssueData } from "../../../../state-managment/slices/issues";
 import { taskStatuses } from "../../../../core/utilis/issues";
 
 const AddIssueModal = ({ isOpen, onClose }) => {

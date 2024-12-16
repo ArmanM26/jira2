@@ -3,7 +3,7 @@ import ModalForm from "../Form";
 import { db } from "../../../../services/firebase";
 import { FIRESTORE_PATH_NAMES } from "../../../../core/utilis/constants";
 import { updateDoc, doc } from "firebase/firestore";
-import { fetchIssueData } from "../../../../state-managment/slices/issues/issues";
+import { fetchIssueData } from "../../../../state-managment/slices/issues";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
